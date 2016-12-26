@@ -19,8 +19,13 @@ class Street(object):
 
 		self.line = Line(self.__beginning, self.__end)
 
-	def addCar (self, car):
-		self.carList.append(car)
+	def getCarPos(self, car):
+		theta = arctan(self.__m)
+
+		carX = car.locOnStreet * cos(theta) + self.beginning.getX
+		carY = car.locOnStreet * sin(theta) + self.beginning.getY
+
+		return carX, carY
 
 	def removeFirstCar(self):
 		temp = self.carList[0]

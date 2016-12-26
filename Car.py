@@ -2,12 +2,14 @@ from math import *
 from graphics import *
 
 class Car(object):
-	def __init__(self, x, y, speed, direc, win):
-		self.__x = x
-		self.__y = y
-		self.__speed = speed  # units per timestep
-		self.__direc = direc  # given in radians with direc=0 pointing East
+	def __init__(self, locOnStreet, speed, direc, win, strt):
+		self.locOnStreet = locOnStreet
+		self.speed = speed  # units per timestep
+		self.direc = direc  # given in radians with direc=0 pointing East
 		self.__win = win
+		self.strt = strt
+
+		self.__x, self.__y = strt.getCarLoc()
 		self.__block=Rectangle(Point((x-0.5),(y-0.5)),Point((x+0.5),(y+0.5)))
 
 	def __str__(self):
