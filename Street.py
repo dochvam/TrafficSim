@@ -48,3 +48,12 @@ class Street(object):
 				return false		
 
 		return (y - ((self.m * x) + b)) < 0.1
+
+	def sortList(self):
+		self.carList = sorted(self.carList)
+
+	def printCarList(self):
+		rtn = ""
+		for car in self.carList:
+			rtn += str(car.locOnStreet) + " "
+		return rtn

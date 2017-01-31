@@ -2,14 +2,14 @@ from math import *
 from graphics import *
 
 class Car(object):
-	def __init__(self, locOnStreet, speed, win, street, color):
+	def __init__(self, locOnStreet, speed, win, street, color="black"):
 		self.dim = 5
 		self.locOnStreet = locOnStreet
 		self.speed = speed  # units per timestep
 		self.__win = win
 		self.street = street
 		self.direc = street.direc  # given in radians with direc=0 pointing East
-		self.visibility = 100
+		self.visibility = 30
 		self.color = color
 
 		self.street.carList.append(self)
@@ -22,6 +22,11 @@ class Car(object):
 		self.block.setFill(self.color)
 		self.block.draw(win)
 
+	def __gt__ (self, other):
+		return other.__lt__(self)
+
+	def __lt__ (self, other):
+		return self.locOnStreet > other.locOnStreet
 
 	def __str__(self):
 		return "Speed: {0} \n Direction: {1} \n Location: ({2}, {3})".format(self.speed, self.direc, self.__x, self.__y)
