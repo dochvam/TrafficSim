@@ -2,30 +2,66 @@ from math import *
 from graphics import *
 
 class Car(object):
-	def __init__(self, locOnStreet, speed, direc, win, strt):
+	def __init__(self, locOnStreet, speed, win, street, color):
+		self.dim = 5
 		self.locOnStreet = locOnStreet
 		self.speed = speed  # units per timestep
-		self.direc = direc  # given in radians with direc=0 pointing East
 		self.__win = win
-		self.strt = strt
+		self.street = street
+		self.direc = street.direc  # given in radians with direc=0 pointing East
+		self.visibility = 100
+		self.color = color
 
-		self.__x, self.__y = strt.getCarLoc()
-		self.__block=Rectangle(Point((x-0.5),(y-0.5)),Point((x+0.5),(y+0.5)))
+		self.street.carList.append(self)
+		self.listLoc = len(self.street.carList) - 1
+
+		self.__x, self.__y = street.getCarPos(self)
+
+		self.block = Rectangle(Point((self.__x - self.dim), (self.__y - self.dim)),Point((self.__x + self.dim),(self.__y + self.dim)))
+
+		self.block.setFill(self.color)
+		self.block.draw(win)
+
 
 	def __str__(self):
-		return "Speed: {0} \n Direction: {1} \n Location: ({2}, {3})".format(self.__speed, self.__direc, self.__x, self.__y)
+		return "Speed: {0} \n Direction: {1} \n Location: ({2}, {3})".format(self.speed, self.direc, self.__x, self.__y)
 
 	def move(self):
-		self.__x = self.__x + (self.__speed * cos(self.__direc))
-		self.__y = self.__y + (self.__speed * sin(self.__direc))
+		self.__x += (self.speed * cos(self.direc))
+		self.__y += (self.speed * sin(self.direc))
+		self.locOnStreet += self.speed
+
+		if self.listLoc != 0:
+			dist_from_next_car = self.street.carList[self.listLoc-1].locOnStreet - self.locOnStreet
+
+			diff_in_speed = self.street.carList[self.listLoc-1].speed - self.speed
+
+			if dist_from_next_car < self.visibility//2 and diff_in_speed < 0:
+				self.accel(-(diff_in_speed//3 + 1))
+
+
+
+
+		if self.locOnStreet >= (self.street.length - self.visibility):
+			self.accel( -((self.speed // 2) + 1) )
+			print("decel")
+
+		elif self.isMoving():
+			self.accel(2)
+
 		self.redraw()
 
 	def accel(self, accel_amt):
-		self.__speed += accel_amt
+		x = self.speed + accel_amt
+
+		if x > self.street.speedLimit:
+			self.speed = self.street.speedLimit
+		else:
+			self.speed = x
 
 	def turn(self, rad):
 		#pos turns counterclockwise
-		self.__direc += rad
+		self.direc += rad
 
 	def delete(self):
 		self.__end = True
@@ -33,9 +69,15 @@ class Car(object):
 		return self.__end
 	def getLoc(self):
 		return self.__x,self.__y
-
+	def isMoving(self):
+		if self.speed == 0:
+			return False
+		else:
+			return True
 	def redraw(self):
-		self.__block.undraw()
-		self.__block.draw(self.__win)
+		self.block.undraw()
+		self.block = Rectangle(Point((self.__x - self.dim), (self.__y - self.dim)),Point((self.__x + self.dim),(self.__y + self.dim)))
+		self.block.setFill(self.color)
+		self.block.draw(self.__win)
 	def undraw(self):
-		self.__block.undraw()
+		self.block.undraw

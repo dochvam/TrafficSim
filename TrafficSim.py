@@ -1,14 +1,22 @@
 from graphics import *
 from Car import *
+from Street import *
 
-win = GraphWin('test',250,250, autoflush=False)
+win = GraphWin('test',500,500,False)
 
-car1 = Car(1,1,2,0,win)
+street1 = Street(Point(50, 100), Point(450, 200), 30, win)
 
-x=0
 
-while (x<100):
+car2 = Car(60,5,win,street1,"red")
+car1 = Car(1,30,win,street1,"blue")
+
+print(car1)
+
+while (car1.speed > 0):
 	car1.move()
-	x += 1
+	car2.move()
 	win.update()
-	time.sleep(5)
+	time.sleep(0.2)
+
+win.getMouse()
+win.close()
