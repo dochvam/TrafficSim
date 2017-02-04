@@ -47,7 +47,7 @@ class Car(object):
 
 
 
-		if self.locOnStreet >= (self.street.length - self.visibility):
+		elif self.locOnStreet >= (self.street.length - self.visibility):
 			self.accel( -((self.speed // 2) + 1) )
 			print("decel")
 
