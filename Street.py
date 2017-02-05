@@ -7,15 +7,24 @@ class Street(object):
 		self.end = end 				# another Point object
 		self.win = win
 		self.length = sqrt((beginning.getX() - end.getX())**2 + (beginning.getY() - end.getY())**2)
-		
-		direc = atan((end.getY() - beginning.getY())/(end.getX() - beginning.getX()))
-		while direc < 0.0:
-			direc += pi * 2
-		self.direc = direc
+		self.m = 0
+		if (end.getX() == beginning.getX()):
+			self.m = 100000000
+			if beginning.getY() > end.getY():
+				self.direc = 3.14159/2
+			else:
+				self.direc = 3*3.14159/2
+
+		else:
+			direc = atan((end.getY() - beginning.getY())/(end.getX() - beginning.getX()))
+			while direc < 0.0:
+				direc += pi * 2
+			self.direc = direc
 
 		self.speedLimit = speedLimit
 
-		self.m = (end.getY() - beginning.getY())/(end.getX() - beginning.getX())
+		if self.m != 100000000:
+			self.m = (end.getY() - beginning.getY())/(end.getX() - beginning.getX())
 		self.b = end.getY() - (self.m * end.getX())
 
 		self.carList = []
@@ -45,7 +54,7 @@ class Street(object):
 				return false
 		if (x > self.end.getX()):
 			if (x > self.beginning.getX()):
-				return false		
+				return false
 
 		return (y - ((self.m * x) + b)) < 0.1
 
@@ -57,3 +66,19 @@ class Street(object):
 		for car in self.carList:
 			rtn += str(car.locOnStreet) + " "
 		return rtn
+
+	def getIntersect(self, other):
+		x = (other.b - self.b)/(self.m - other.m)
+		y = (self.m * x) + self.b
+
+		locOnStreet1 = sqrt((x-self.beginning.getX())**2 + (y-self.beginning.getY())**2)
+		locOnStreet2 = sqrt((x-other.beginning.getX())**2 + (y-other.beginning.getY())**2)
+
+		return x, y, locOnStreet1, locOnStreet2
+
+
+
+
+
+
+
