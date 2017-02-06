@@ -21,13 +21,14 @@ stoplights = []
 stoplights.append(StopLight(streets[0], streets[1], 10, 10, win))
 
 cars = []
-
-
+cars.append(Car(1, 2, win, streets[0], "red"))
+cars.append(Car(1, 2, win, streets[1], "blue"))
 
 for i in range(100):
 	step(cars, streets, stoplights)
 	win.update()
 	time.sleep(0.5)
+	print(cars[0].wholeListLoc)
 
 win.getMouse()
 win.close()

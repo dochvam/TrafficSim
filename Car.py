@@ -1,5 +1,6 @@
 from math import *
 from graphics import *
+from StopLight import *
 
 class Car(object):
 	def __init__(self, locOnStreet, speed, win, street, color="black"):
@@ -13,7 +14,10 @@ class Car(object):
 		self.color = color
 
 		self.street.carList.append(self)
+		self.street.itemsList.append(self)
+
 		self.listLoc = len(self.street.carList) - 1
+		self.wholeListLoc = len(self.street.itemsList) - 1
 
 		self.__x, self.__y = street.getCarPos(self)
 
@@ -32,22 +36,45 @@ class Car(object):
 		return "Speed: {0} \n Direction: {1} \n Location: ({2}, {3})".format(self.speed, self.direc, self.__x, self.__y)
 
 	def move(self):
-		if self.listLoc != 0:
+		accel_amt = 0
+
+		if self.wholeListLoc != 0 and isinstance((self.street.itemsList[self.wholeListLoc-1]), StopLight):
+
+			light = self.street.itemsList[self.wholeListLoc-1]
+
+			print("Got here 1")
+
+			marker = 0
+			if self.street == self.street.itemsList[self.wholeListLoc-1].street1:
+				dist_from_light = self.street.itemsList[self.wholeListLoc-1].locOnStreet1 - self.locOnStreet
+				marker = 1
+			else:
+				dist_from_light = self.street.itemsList[self.wholeListLoc-1].locOnStreet2 - self.locOnStreet
+				marker = 2
+
+			if dist_from_light < self.visibility and light.state[marker - 1] == "red":
+				print("got here too!")
+				accel_amt = ( -((self.speed // 2) + 1) )
+
+			elif self.isMoving():
+				accel_amt = (2)
+
+		elif self.listLoc != 0:
 			dist_from_next_car = self.street.carList[self.listLoc-1].locOnStreet - self.locOnStreet
 
 			diff_in_speed = self.street.carList[self.listLoc-1].speed - self.speed
 
 			if dist_from_next_car < self.visibility and diff_in_speed < 0:
-				self.accel(-1*(diff_in_speed//1 + 2))
-			elif self.isMoving():
-                                self.accel(2)
-
-
+				accel_amt = (-1*(diff_in_speed//1 + 2))
 
 
 		elif self.locOnStreet >= (self.street.length - self.visibility):
-			self.accel( -((self.speed // 2) + 1) )
+			accel_amt = ( -((self.speed // 2) + 1) )
 			print("decel")
+		elif self.isMoving():
+			accel_amt = (2)
+
+		self.accel(accel_amt)
 
 		self.__x += (self.speed * cos(self.direc))
 		self.__y += (self.speed * sin(self.direc))

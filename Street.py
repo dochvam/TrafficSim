@@ -6,14 +6,16 @@ class Street(object):
 		self.beginning = beginning 	# a Point object
 		self.end = end 				# another Point object
 		self.win = win
+		self.hash = hash(self.beginning) + hash(self.end)
+		self.lightList = []
 		self.length = sqrt((beginning.getX() - end.getX())**2 + (beginning.getY() - end.getY())**2)
 		self.m = 0
 		if (end.getX() == beginning.getX()):
 			self.m = 100000000
 			if beginning.getY() > end.getY():
-				self.direc = 3.14159/2
-			else:
 				self.direc = 3*3.14159/2
+			else:
+				self.direc = 3.14159/2
 
 		else:
 			direc = atan((end.getY() - beginning.getY())/(end.getX() - beginning.getX()))
@@ -29,9 +31,14 @@ class Street(object):
 
 		self.carList = []
 
+		self.itemsList = []
+
 		self.line = Line(self.beginning, self.end)
 		self.line.setWidth(3)
 		self.line.draw(self.win)
+
+	def __eq__ (self, other):
+		return self.hash == other.hash
 
 	def getCarPos(self, car):
 		theta = self.direc
@@ -75,9 +82,6 @@ class Street(object):
 		locOnStreet2 = sqrt((x-other.beginning.getX())**2 + (y-other.beginning.getY())**2)
 
 		return x, y, locOnStreet1, locOnStreet2
-
-
-
 
 
 
