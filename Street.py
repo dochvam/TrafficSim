@@ -73,6 +73,11 @@ class Street(object):
 		for car in self.carList:
 			rtn += str(car.locOnStreet) + " "
 		return rtn
+		
+	def addCar(self, car):
+		if type(car) is Car:
+			carList.add(car)
+			self.sortList()
 
 	def getIntersect(self, other):
 		x = (other.b - self.b)/(self.m - other.m)
