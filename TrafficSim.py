@@ -3,7 +3,9 @@ from Car import *
 from Street import *
 from StopLight import *
 
-def step(carArray, streetArray, stopArray):
+#cars should move on a street by street basis because the lights dictate
+#who can move
+def step(carArray, streetArray, stopArray): #this needs to be reworked
 	for street in streetArray:
 		street.sortList()
 	for car in carArray:
@@ -20,7 +22,10 @@ streets.append(Street(Point(250, 50), Point(250, 450), 10, win))
 stoplights = []
 stoplights.append(StopLight(streets[0], streets[1], 10, 10, win))
 
-cars = []
+#is this even necessary? cars are stored in the street carList
+cars = []#[Car(60,5,win,streets[0],"red"), Car(10,-5,win,streets[1],"blue")]
+streets[0].addCar(Car(60,5,win,streets[0],"red"))
+streets[1].addCar(Car(10,-5,win,streets[1],"blue"))
 
 
 

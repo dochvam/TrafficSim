@@ -76,7 +76,10 @@ class Street(object):
 
 		return x, y, locOnStreet1, locOnStreet2
 
-
+        def addCar(self, car):
+                if type(car) is Car:
+                        carList.add(car)
+                        self.sortList()
 
 
 
