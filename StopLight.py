@@ -29,7 +29,9 @@ class StopLight (object):
 		# t = how far into the cycle we are
 		self.t = 0
 
+                #state of street1 THAT WILL BE PASSED TO STREET 1
 		self.state1 = "red"
+		#state of street2 THAT WILL BE PASSED TO STREET 2
 		self.state2 = "green"
 		self.updateColor()
 
