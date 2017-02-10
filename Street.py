@@ -1,5 +1,6 @@
 from math import *
 from graphics import *
+from Car import *
 
 class Street(object):
 	def __init__ (self, beginning, end, speedLimit, win):
@@ -19,9 +20,9 @@ class Street(object):
 			self.m = 100000000
 			if beginning.getY() > end.getY():
 
-				self.direc = pi/2
-			else:
 				self.direc = 3*pi/2
+			else:
+				self.direc = pi/2
 		else:
 			direc = atan((end.getY() - beginning.getY())/(end.getX() - beginning.getX()))
 			while direc < 0.0:
@@ -32,14 +33,15 @@ class Street(object):
 			self.m = (end.getY() - beginning.getY())/(end.getX() - beginning.getX())
 		self.b = end.getY() - (self.m * end.getX())
 
-                #cars and related
+		#cars and related
 		self.carList = []
-                self.speedLimit = speedLimit
-                self.light = "green"
+		self.speedLimit = speedLimit
+		self.light = "green"
 
 		self.itemsList = []
-                #graphics
-                self.win = win          
+		
+		#graphics
+		self.win = win          
 		self.line = Line(self.beginning, self.end) #eventually this should be adapted for multiple lanes? abstract class?
 		self.line.setWidth(3)
 		self.line.draw(self.win)
@@ -83,7 +85,7 @@ class Street(object):
 		
 	def addCar(self, car):
 		if type(car) is Car:
-			carList.add(car)
+			self.carList.append(car)
 			self.sortList()
 
 	def getIntersect(self, other):
@@ -95,22 +97,22 @@ class Street(object):
 
 		return x, y, locOnStreet1, locOnStreet2
 
-        def addCar(self, car):
-                if type(car) is Car:
-                        carList.add(car)
-                        self.sortList()
+	# def addCar(self, car):
+	# 	if type(car) is Car:
+	# 		carList.add(car)
+	# 		self.sortList()
 
-        def setLight(self, light):
-                if type(light) is str:
-                        self.light = light
+	# def setLight(self, light):
+	# 	if type(light) is str:
+	# 		self.light = light
 
-        def moveCars(self):
-                if self.light is "green":
-                        for car in carList:
-                                car.move()
-                elif self.light is "yellow":
-                        for car in carList:
-                                car.move() #this should be fixed
-                elif self.light is "red":
-                        continue #this should also be fixed. I propose getting cars to stop before the "Intersection" but we need to make that first
+	def moveCars(self):
+		# if self.light is "green":
+		for car in self.carList:
+			car.move()
+		# elif self.light is "yellow":
+		# 	for car in carList:
+		# 		car.move() #this should be fixed
+		# elif self.light is "red":
+		# 	continue #this should also be fixed. I propose getting cars to stop before the "Intersection" but we need to make that first
 

@@ -1,4 +1,4 @@
- dfrom math import *
+from math import *
 from graphics import *
 
 
