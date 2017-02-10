@@ -47,17 +47,26 @@ class Car(object):
 			marker = 0
 			if self.street == self.street.itemsList[self.wholeListLoc-1].street1:
 				dist_from_light = self.street.itemsList[self.wholeListLoc-1].locOnStreet1 - self.locOnStreet
+				if dist_from_light < 0:
+					self.street.itemsList[self.wholeListLoc] = self.street.itemsList[self.wholeListLoc-1]
+					self.street.itemsList[self.wholeListLoc-1] = self
+					marker = -999
 				marker = 1
 			else:
 				dist_from_light = self.street.itemsList[self.wholeListLoc-1].locOnStreet2 - self.locOnStreet
+				if dist_from_light < 0:
+					self.street.itemsList[self.wholeListLoc] = self.street.itemsList[self.wholeListLoc-1]
+					self.street.itemsList[self.wholeListLoc-1] = self
+					marker = -999
 				marker = 2
 
-			if dist_from_light < self.visibility and light.state[marker - 1] == "red":
-				print("got here too!")
-				accel_amt = ( -((self.speed // 2) + 1) )
+			if marker != -999:
+				if dist_from_light < self.visibility and light.state[marker - 1] == "red":
+					print("got here too!")
+					accel_amt = ( -((self.speed // 2) + 1) )
 
-			elif self.isMoving():
-				accel_amt = (2)
+				elif self.isMoving():
+					accel_amt = (2)
 
 		elif self.listLoc != 0:
 			dist_from_next_car = self.street.carList[self.listLoc-1].locOnStreet - self.locOnStreet

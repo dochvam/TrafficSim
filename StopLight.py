@@ -4,7 +4,6 @@ from graphics import *
 
 class StopLight (object):
 	
-
 	def __init__ (self, street1, street2, time1, time2, win):
 		self.street1 = street1
 		self.street2 = street2

@@ -74,7 +74,7 @@ class Street(object):
 
 		return (y - ((self.m * x) + b)) < 0.1
 
-	def sortList(self):
+	def sortCarList(self):
 		self.carList = sorted(self.carList)
 
 	def printCarList(self):
@@ -86,7 +86,7 @@ class Street(object):
 	def addCar(self, car):
 		if type(car) is Car:
 			self.carList.append(car)
-			self.sortList()
+			self.sortCarList()
 
 	def getIntersect(self, other):
 		x = (other.b - self.b)/(self.m - other.m)
