@@ -6,8 +6,9 @@ from StopLight import *
 def step(carArray, streetArray, stopArray):
 	for street in streetArray:
 		street.sortList()
-		for car in carList:
-			car.move()
+		street.moveCars()
+##	for car in carArray:
+##		car.move()
 	for stoplight in stopArray:
 		stoplight.step()
 
